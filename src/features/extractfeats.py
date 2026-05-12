@@ -1,16 +1,16 @@
-from src.features.strokeDensity import calculate_stroke_density
+from features.strokeDensity import calculate_stroke_density
 
-from src.features.slantAngle import calculate_slant_angle
+from features.slantAngle import calculate_slant_angle
 
-from src.features.spacingConsistency import (
+from features.spacingConsistency import (
     calculate_spacing_consistency
 )
 
-from src.features.baselineDev import (
+from features.baselineDev import (
     calculate_baseline_deviation
 )
 
-from src.features.strokeSmoothness import (
+from features.strokeSmoothness import (
     calculate_stroke_smoothness
 )
 
