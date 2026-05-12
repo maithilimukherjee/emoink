@@ -10,6 +10,7 @@ from preprocessing.denoise import denoise_image
 from preprocessing.threshold import adaptive_thresholding
 from preprocessing.deskew import deskew_image
 from preprocessing.segment import segment_lines
+from features.extractfeats import extract_features
 
 
 INPUT_DIR = "../data/raw"
@@ -88,6 +89,9 @@ def main():
             show_image(processed, title="Processed")
 
         print(f"lines detected: {n_lines}")
+        
+        extracted_features = extract_features(processed)
+        print(f"extracted features: {extracted_features}")
 
 
 if __name__ == "__main__":
