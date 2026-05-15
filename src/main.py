@@ -10,9 +10,13 @@ from preprocessing.denoise import denoise_image
 from preprocessing.threshold import adaptive_thresholding
 from preprocessing.deskew import deskew_image
 from preprocessing.segment import segment_lines
+
 from features.extractfeats import extract_features
 from inference.normalizescores import normalize_scores
 from inference.affectivestate import infer_affective_state
+
+from hmm.viterbi import viterbi
+
 
 INPUT_DIR = "../data/raw"
 OUTPUT_DIR = "../data/processed"
@@ -22,16 +26,10 @@ def process_image(image_path, save_prefix):
 
     image = load_image(image_path)
 
-    # grayscale
     gray = convert_to_grayscale(image)
-
-    # denoise
     denoised = denoise_image(gray)
-
-    # threshold
     thresh = adaptive_thresholding(denoised)
 
-    # deskew
     coords = np.column_stack(np.where(thresh < 255))
 
     if len(coords) > 0:
@@ -44,10 +42,8 @@ def process_image(image_path, save_prefix):
     else:
         processed = thresh
 
-    # save processed image
     cv2.imwrite(f"{OUTPUT_DIR}/{save_prefix}_processed.jpg", processed)
 
-    # segmentation
     lines = segment_lines(processed)
 
     line_dir = f"{OUTPUT_DIR}/{save_prefix}_lines"
@@ -70,6 +66,8 @@ def main():
 
     print(f"found {len(files)} images")
 
+    all_observations = []
+
     for idx, file in enumerate(files):
 
         image_path = os.path.join(INPUT_DIR, file)
@@ -81,22 +79,37 @@ def main():
             save_prefix=f"img_{idx}"
         )
 
-        # visualize only first image (avoid spam)
         if idx == 0:
             show_image(image, title="Original")
             show_image(gray, title="Grayscale")
             show_image(denoised, title="Denoised")
             show_image(thresh, title="Thresholded")
             show_image(processed, title="Processed")
-        
-        extracted_features = extract_features(processed)
-        print(f"extracted features: {extracted_features}")
-        
-        affective_scores = infer_affective_state(extracted_features)
-        
+
+        features = extract_features(processed)
+        print(f"extracted features: {features}")
+
+        affective_scores = infer_affective_state(features)
+
         normalized_scores = normalize_scores(affective_scores)
         print(f"normalized probabilities: {normalized_scores}")
-        
+
+        all_observations.append(normalized_scores)
+
+        print(f"lines detected: {n_lines}")
+
+    # ----------------------------
+    # HMM DECODING (VITERBI)
+    # ----------------------------
+
+    best_path, final_prob = viterbi(all_observations)
+
+    print("\n==============================")
+    print("MOST LIKELY EMOTIONAL SEQUENCE")
+    print("==============================")
+    print(best_path)
+
+    print("\nsequence probability:", final_prob)
 
 
 if __name__ == "__main__":
