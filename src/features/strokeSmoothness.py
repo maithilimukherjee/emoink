@@ -47,7 +47,9 @@ def calculate_stroke_smoothness(image):
             continue
 
         # smoothness ratio
-        smoothness = perimeter / len(approx)
+        smoothness = perimeter / (
+    len(approx) * np.sqrt(cv2.contourArea(contour))
+)
 
         smoothness_scores.append(smoothness)
 

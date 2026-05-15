@@ -12,6 +12,7 @@ from preprocessing.deskew import deskew_image
 from preprocessing.segment import segment_lines
 from features.extractfeats import extract_features
 
+from inference.affectivestate import infer_affective_state
 
 INPUT_DIR = "../data/raw"
 OUTPUT_DIR = "../data/processed"
@@ -92,6 +93,10 @@ def main():
         
         extracted_features = extract_features(processed)
         print(f"extracted features: {extracted_features}")
+        
+        affective_scores = infer_affective_state(extracted_features)
+
+        print(f"affective scores: {affective_scores}")
 
 
 if __name__ == "__main__":

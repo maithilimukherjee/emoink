@@ -64,9 +64,8 @@ def calculate_spacing_consistency(image):
     if mean_dist == 0:
         return 1.0
 
-    consistency_score = max(
-        0,
-        min(1, 1 - (std_dist / mean_dist))
-    )
+    consistency_score = np.exp(
+    -(std_dist / mean_dist)
+)
 
     return round(consistency_score, 4)
