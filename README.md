@@ -20,41 +20,35 @@ Emoink is a machine learning system designed to analyze handwriting patterns and
   - NumPy and SciPy for numerical computations
   - OpenCV and scikit-image for image processing
   - Matplotlib for visualization
- 
 
 ## Project Structure
+
+```
 emoink/
-│
 ├── data/
 │   ├── raw/
-│   ├── processed/
-│
+│   └── processed/
 ├── src/
 │   ├── main.py
-│
 │   ├── preprocessing/
 │   │   ├── grayscale.py
 │   │   ├── denoise.py
 │   │   ├── threshold.py
 │   │   ├── deskew.py
-│   │   ├── segment.py
-│
+│   │   └── segment.py
 │   ├── features/
-│   │   ├── extractfeats.py
-│
+│   │   └── extractfeats.py
 │   ├── inference/
 │   │   ├── affective_state.py
-│   │   ├── normalizescores.py
-│
+│   │   └── normalizescores.py
 │   ├── hmm/
 │   │   ├── hmmmodel.py
-│   │   ├── viterbi.py
-│
-│   ├── utils/
-│   │   ├── imageloader.py
-│   │   ├── visualizer.py
-│
+│   │   └── viterbi.py
+│   └── utils/
+│       ├── imageloader.py
+│       └── visualizer.py
 └── README.md
+```
 
 ## Tech Stack
 
