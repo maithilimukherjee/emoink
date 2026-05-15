@@ -11,7 +11,7 @@ from preprocessing.threshold import adaptive_thresholding
 from preprocessing.deskew import deskew_image
 from preprocessing.segment import segment_lines
 from features.extractfeats import extract_features
-
+from inference.normalizescores import normalize_scores
 from inference.affectivestate import infer_affective_state
 
 INPUT_DIR = "../data/raw"
@@ -88,15 +88,15 @@ def main():
             show_image(denoised, title="Denoised")
             show_image(thresh, title="Thresholded")
             show_image(processed, title="Processed")
-
-        print(f"lines detected: {n_lines}")
         
         extracted_features = extract_features(processed)
         print(f"extracted features: {extracted_features}")
         
         affective_scores = infer_affective_state(extracted_features)
-
-        print(f"affective scores: {affective_scores}")
+        
+        normalized_scores = normalize_scores(affective_scores)
+        print(f"normalized probabilities: {normalized_scores}")
+        
 
 
 if __name__ == "__main__":
